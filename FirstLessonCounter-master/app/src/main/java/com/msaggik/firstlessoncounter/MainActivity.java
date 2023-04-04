@@ -91,34 +91,38 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
-
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        catImage = findViewById(R.id.cat_image);
-        catImage.setX(catX);
-        catImage.setY(catY);
+        if (savedInstanceState != null) {
+           
+            counter = savedInstanceState.getInt("counter", 0);
+        }
         
-        View layout = findViewById(R.id.layout);
-        layout.setOnClickListener(this);
+        updateCounter(); 
     }
     
     @Override
-    public void onClick(View v) {
-        int x = Math.round(v.getX()); 
-        int y = Math.round(v.getY());
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         
-        boolean isCatHere = (x >= catX && x <= catX + catImage.getWidth()) 
-                            && (y >= catY && y <= catY + catImage.getHeight());
-        if (isCatHere) {
-            Toast.makeText(this, "Кот найден!", Toast.LENGTH_SHORT).show();
-            
-            catImage.setVisibility(View.VISIBLE);
-        } else {
-            Toast.makeText(this, "Кота здесь нет", Toast.LENGTH_SHORT).show();
-        }
+        
+        outState.putInt("counter", counter);
     }
+    
+    private void updateCounter() {
+        TextView textView = findViewById(R.id.text_view);
+        textView.setText("Counter: " + counter);
+    }
+    
+    public void incrementCounter(View view) {
+        counter++;
+        updateCounter(); 
+    }
+    
 }
+
+
+    
